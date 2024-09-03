@@ -23,10 +23,16 @@ livros = [
 
 @app.route('/api/livros', methods=['GET'])
 def get_livros():
-    return jsonify(livros)
+    livros = Livro.query.all()
+    return jsonify([{
+        "id": livro.id,
+        "titulo": livro.titulo,
+        "autor": livro.autor
+    }for livro in livros])
 
 @app.route('/api/livros/<int:id>', methods=['GET'])
 def get_livro(id):
+    livro = Livro.query.get(id)
     livro = next(
         (livro for livro in livros if livro['id'] == id),
         None
